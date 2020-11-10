@@ -30,6 +30,30 @@
 
 				<div class="terminal">
 					<h2>TERMINAL</h2>
+					<!-- <table class="table table-borderless" style="color: aliceblue;">
+						<tbody>
+						  <tr>
+							<td>Play Music</td>
+							<td><i>!play</i></td>
+						  </tr>
+						  <tr>
+							  <td>Pause Music</td>
+							<td><i>!pause</i></td>
+						  </tr>
+						  <tr>
+							  <td>Load Music</td>
+							<td><i>- !load &lt music name &gt;</i></td>
+						  </tr>
+						  <tr>
+							  <td>Reload Player</td>
+							<td><i>!reload</i></td>
+						  </tr>
+						  <tr>
+							  <td>clear console</td>
+							<td><i>clear or cls</i></td>
+						  </tr>
+						</tbody>
+					  </table> -->
 					<div id="history">
 
 					</div>
@@ -40,14 +64,16 @@
 				</div>
 			</div>
 			<div class="col-md-6" id="music_box">
+				<h3 id="helper" style="color: white;"></h3>
 				<div class="row justify-content-md-center">
 					<div class="card " style="width: 20rem;">
-						<!-- <img class="card-img-top" id="track_img" src="https://image.freepik.com/free-icon/black-music-icon_318-9277.jpg" alt="Card image cap"> -->
+						<!-- <img class="card-img-top"  src="{{tumbnails}}" alt="Card image cap">
+						<a href="{{tumbnails}}">click</a> -->
 						<div class="card-body">
-							<h5 class="card-title" id="track_title">Lorem ipsum dolor sit amet, consectetur adipiscing
-								elit</h5>
-							<p class="card-text">at consequat tellus. Integer imperdiet tellus ante, non imperdiet dolor
-								porta vitae. Suspendisse potenti.</p>
+							<h5 class="card-title" id="track_title">{{track}}</h5>
+							<p class="card-text">Views: {{ views }}</p>
+							<a href="{{ link }}" class="btn btn-primary" target="_blank">Link</a>
+							<br><br>
 							<audio controls id="audioId" autoplay class="center">
 								<source src="/media/{{ url }}" type="audio/mpeg">
 							</audio>
@@ -92,11 +118,12 @@
 								'text': val
 							},
 							success: function (response) {
-								$('#track_title').text(response['track']);
-								$('#track_img').attr('src', response['thumbnails']);
+								setTimeout(function(){ $('#loader').text('Song Loaded Refreshing memory')}, 3000);
+								location.reload();
 							},
 							error: function (err) {
 								console.log(err);
+								location.reload();
 							}
 						})
 					}
