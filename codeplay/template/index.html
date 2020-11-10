@@ -6,39 +6,93 @@
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	<!-- Material Design for Bootstrap fonts and icons -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+		integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+		crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="{% static 'css/index.css'%}">
 	<!-- Material Design for Bootstrap CSS -->
-	<link rel="stylesheet"
-		href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
-		integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-
 	<title>Code Play</title>
 </head>
 
-<body class="app">
+<body class="app" style="background-color: black;">
 	<div class="jumbotron app_jumbotrons">
 		<h1 class="display-4">Code Play</h1>
 		<p class="lead">Play Music and Code</p>
 	</div>
-	<p>{{ url }}</p>
-	<audio controls>
-		<source src="/media/{{ url }}" type="audio/mpeg">
-	</audio>
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
-		integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
-		crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
-		integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
-		crossorigin="anonymous"></script>
-	<script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="terminal">
+					<div id="history" style="height:59px;">
+
+					</div>
+					<div class="line">
+						<span id="path">User184&nbsp;@codeplay$:&nbsp;</span>
+						<input type="text" id="input">
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="col-md-6">
+				<audio controls>
+					<source src="/media/{{ url }}" type="audio/mpeg">
+				</audio>
+			</div>
+			<form method="POST">
+				{% csrf_token%}
+				<input type="hidden" value="" id="input">
+			</form>
+		</div>
+	</div>
+
+
+
+
+	<script>$(function () {
+			$('.terminal').on('click', function () {
+				$('#input').focus();
+			});
+			const url ="127.0.0.1"
+			$('#input').on('keydown', function search(e) {
+				if (e.keyCode == 13) {
+
+					if ($(this).val() === 'clear' || $(this).val() === 'cls') {
+						$('#history').html('');
+					}
+					else if ($(this).val().substring(0, 5) === '!play') {
+						var val = $(this).val().substring(6);
+						console.log(val);
+						var csrf=document.getElementsByName('csrfmiddlewaretoken');
+						console.log(csrf[0].value);
+						const url='';
+						$.ajax({
+							type:'POST',
+							url:url,
+							data:{
+								'csrfmiddlewaretoken':csrf[0].value,
+								'text':val
+							},
+							success:function(response){
+								console.log(response);
+							},
+							error:function(err){
+								console.log(err);
+							}
+						})
+					}
+					else {
+
+						$('#history').append('\''+$(this).val() + '\' command not found<br/>');
+					}
+
+					$('#input').val('');
+
+				}
+			});
+		});</script>
 </body>
 
 </html>
