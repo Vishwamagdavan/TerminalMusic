@@ -37,9 +37,10 @@
 			</div>
 			<hr>
 			<div class="col-md-6">
-				<audio controls>
+				<audio controls id="audioId" autoplay>
 					<source src="/media/{{ url }}" type="audio/mpeg">
 				</audio>
+				<p style="color: :aliceblue;">{{url}}</p>
 			</div>
 			<form method="POST">
 				{% csrf_token%}
@@ -52,6 +53,7 @@
 
 
 	<script>$(function () {
+			
 			$('.terminal').on('click', function () {
 				$('#input').focus();
 			});
@@ -62,7 +64,7 @@
 					if ($(this).val() === 'clear' || $(this).val() === 'cls') {
 						$('#history').html('');
 					}
-					else if ($(this).val().substring(0, 5) === '!play') {
+					else if ($(this).val().substring(0, 5) === '!load') {
 						var val = $(this).val().substring(6);
 						console.log(val);
 						var csrf=document.getElementsByName('csrfmiddlewaretoken');
@@ -82,6 +84,18 @@
 								console.log(err);
 							}
 						})
+					}
+					else if($(this).val()==='!play'){
+						$('#audioId').trigger('play')
+					}
+					else if($(this).val()==='!reload'){
+						location.reload();
+					}
+					else if($(this).val()==='!pause'){
+						$('#audioId').trigger('pause')
+					}
+					else if($(this).val()==='!stop'){
+						$('#audioId').trigger('pause')
 					}
 					else {
 
