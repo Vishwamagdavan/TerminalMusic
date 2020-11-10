@@ -15,8 +15,12 @@ def index(request):
         results = YoutubeSearch(text, max_results=10).to_dict()
         yt=YouTube(url+results[0]['url_suffix'])
         stream=yt.streams.filter(only_audio=True).first()
-        file=stream.download(mpath,filename='temp')
+        stream.download(mpath,filename='temp')
         data['text']=url+results[0]['url_suffix']
+        data['track']=results[0]['title']
+        data['tumbnails']=results[0]['thumbnails']
+        data['duration']=results[0]['duration']
+        data['views']=results[0]['views']
         return JsonResponse(data,safe=False)
     path = settings.MEDIA_ROOT
     song_list = os.listdir(path + '/')

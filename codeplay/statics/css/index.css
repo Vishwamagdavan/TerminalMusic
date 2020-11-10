@@ -1,13 +1,18 @@
-
+.app{
+  background-color: black;
+}
 .terminal{
-  background: black;
+  /* background: black; */
   color: white;
   font: courier;
-  padding: 10px;
-  height: 100px;
+  padding: 100px;
+  margin: auto;
+  height: auto;
   overflow: hidden;
 }
-
+#path{
+  color: darkkhaki;
+}
 .line{
   display: table;
   width: 100%;
@@ -25,4 +30,11 @@
   background: black;
   color: white;
   outline: none;
+}
+#terminal_box{
+  background-color: black;
+  
+}
+#music_box{
+  margin-top: 300px;
 }
