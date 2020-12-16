@@ -6,6 +6,7 @@ from youtube_search import YoutubeSearch
 from pytube import YouTube
 from .models import Song
 import json
+from django.core.cache import cache 
 
 # Create your views here.
 mpath=settings.MEDIA_ROOT
@@ -13,6 +14,7 @@ def index(request):
     url="https://www.youtube.com/"
     data={}
     if request.method=='POST':
+        cache.clear()
         text=request.POST.get('text')
         results = YoutubeSearch(text, max_results=10).to_dict()
         yt=YouTube(url+results[0]['url_suffix'])
@@ -34,9 +36,11 @@ def index(request):
     link=data['text']
     path = settings.MEDIA_ROOT
     song_list = os.listdir(path + '/')
+    cache.clear()
     if song_list:
         song_list=song_list[0]
     else:
         song_list=""
     context={'url': song_list,'track': track,'tumbnails':thumbnails,'views':views,'link':link}
+    
     return render(request,'index.html',context)
